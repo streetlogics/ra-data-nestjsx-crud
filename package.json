@@ -4,9 +4,28 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "prepare": "yarn build",
+    "build": "yarn workspace ra-data-nestjsx-crud build",
+    "build:watch": "yarn workspace ra-data-nestjsx-crud build:watch",
+    "postinstall": "yarn build"
+  },
+  "main": "packages/data-provider/lib/index.js",
+  "typings": "packages/data-provider/lib/index.d.ts",
   "devDependencies": {
     "@types/jest": "^28.1.6",
     "@types/node": "^18.6.5",
-    "lerna": "^5.0.0"
+    "@types/lodash.omitby": "^4.6.7",
+    "install-peers-cli": "^2.2.0",
+    "lerna": "^5.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@dataui/crud-request": "^5.3.4",
+    "lodash.omitby": "^4.6.0",
+    "query-string": "^7.1.1"
+  },
+  "peerDependencies": {
+    "react-admin": ">=3.0.0"
   }
 }

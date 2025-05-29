@@ -3,10 +3,10 @@ import {
   QueryFilter,
   QuerySort,
   RequestQueryBuilder,
-} from "@dataui/crud-request";
-import omitBy from "lodash.omitby";
-import { DataProvider, fetchUtils } from "ra-core";
-import { stringify } from "query-string";
+} from '@dataui/crud-request';
+import omitBy from 'lodash.omitby';
+import { DataProvider, fetchUtils } from 'ra-core';
+import { stringify } from 'query-string';
 
 /**
  * Maps react-admin queries to a nestjsx/crud powered REST API
@@ -47,9 +47,9 @@ const composeFilter = (paramsFilter: any): QueryFilter[] => {
     let ops = splitKey[1];
     if (!ops) {
       if (
-        typeof flatFilter[key] === "boolean" ||
-        typeof flatFilter[key] === "number" ||
-        (typeof flatFilter[key] === "string" &&
+        typeof flatFilter[key] === 'boolean' ||
+        typeof flatFilter[key] === 'number' ||
+        (typeof flatFilter[key] === 'string' &&
           flatFilter[key].match(/^\d+$/)) ||
         flatFilter[key].match(uuidRegex)
       ) {
@@ -59,7 +59,7 @@ const composeFilter = (paramsFilter: any): QueryFilter[] => {
       }
     }
 
-    if (field.startsWith("_") && field.includes(".")) {
+    if (field.startsWith('_') && field.includes('.')) {
       field = field.split(/\.(.+)/)[1];
     }
     return { field, operator: ops, value: flatFilter[key] } as QueryFilter;
@@ -71,7 +71,7 @@ const composeQueryParams = (queryParams: any = {}): string => {
 };
 
 const mergeEncodedQueries = (...encodedQueries) =>
-  encodedQueries.map((query) => query).join("&");
+  encodedQueries.map((query) => query).join('&');
 
 export default (
   apiUrl: string,
@@ -110,7 +110,7 @@ export default (
   getMany: (resource, params) => {
     const query = RequestQueryBuilder.create()
       .setFilter({
-        field: "id",
+        field: 'id',
         operator: CondOperator.IN,
         value: `${params.ids}`,
       })
@@ -155,7 +155,7 @@ export default (
     // no need to send all fields, only updated fields are enough
     const data = countDiff(params.data, params.previousData);
     return httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       body: JSON.stringify(data),
     }).then(({ json }) => ({ data: json }));
   },
@@ -164,7 +164,7 @@ export default (
     Promise.all(
       params.ids.map((id) =>
         httpClient(`${apiUrl}/${resource}/${id}`, {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify(params.data),
         })
       )
@@ -174,22 +174,22 @@ export default (
 
   create: (resource, params) =>
     httpClient(`${apiUrl}/${resource}`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
+      data: { ...params.data, ...json, id: json.id || params.data.id },
     })),
 
   delete: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     }).then(({ json }) => ({ data: { ...json, id: params.id } })),
 
   deleteMany: (resource, params) =>
     Promise.all(
       params.ids.map((id) =>
         httpClient(`${apiUrl}/${resource}/${id}`, {
-          method: "DELETE",
+          method: 'DELETE',
         })
       )
     ).then((responses) => ({ data: responses.map(({ json }) => json) })),

@@ -27,9 +27,9 @@ const composeFilter = (paramsFilter) => {
         let field = splitKey[0];
         let ops = splitKey[1];
         if (!ops) {
-            if (typeof flatFilter[key] === "boolean" ||
-                typeof flatFilter[key] === "number" ||
-                (typeof flatFilter[key] === "string" &&
+            if (typeof flatFilter[key] === 'boolean' ||
+                typeof flatFilter[key] === 'number' ||
+                (typeof flatFilter[key] === 'string' &&
                     flatFilter[key].match(/^\d+$/)) ||
                 flatFilter[key].match(uuidRegex)) {
                 ops = crud_request_1.CondOperator.EQUALS;
@@ -38,7 +38,7 @@ const composeFilter = (paramsFilter) => {
                 ops = crud_request_1.CondOperator.CONTAINS_LOW;
             }
         }
-        if (field.startsWith("_") && field.includes(".")) {
+        if (field.startsWith('_') && field.includes('.')) {
             field = field.split(/\.(.+)/)[1];
         }
         return { field, operator: ops, value: flatFilter[key] };
@@ -47,7 +47,7 @@ const composeFilter = (paramsFilter) => {
 const composeQueryParams = (queryParams = {}) => {
     return (0, query_string_1.stringify)(ra_core_1.fetchUtils.flattenObject(queryParams), { skipNull: true });
 };
-const mergeEncodedQueries = (...encodedQueries) => encodedQueries.map((query) => query).join("&");
+const mergeEncodedQueries = (...encodedQueries) => encodedQueries.map((query) => query).join('&');
 exports.default = (apiUrl, httpClient = ra_core_1.fetchUtils.fetchJson) => ({
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
@@ -75,7 +75,7 @@ exports.default = (apiUrl, httpClient = ra_core_1.fetchUtils.fetchJson) => ({
     getMany: (resource, params) => {
         const query = crud_request_1.RequestQueryBuilder.create()
             .setFilter({
-            field: "id",
+            field: 'id',
             operator: crud_request_1.CondOperator.IN,
             value: `${params.ids}`,
         })
@@ -110,27 +110,27 @@ exports.default = (apiUrl, httpClient = ra_core_1.fetchUtils.fetchJson) => ({
     update: (resource, params) => {
         const data = countDiff(params.data, params.previousData);
         return httpClient(`${apiUrl}/${resource}/${params.id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             body: JSON.stringify(data),
         }).then(({ json }) => ({ data: json }));
     },
     updateMany: (resource, params) => Promise.all(params.ids.map((id) => httpClient(`${apiUrl}/${resource}/${id}`, {
-        method: "PUT",
+        method: 'PUT',
         body: JSON.stringify(params.data),
     }))).then((responses) => ({
         data: responses.map(({ json }) => json),
     })),
     create: (resource, params) => httpClient(`${apiUrl}/${resource}`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(params.data),
     }).then(({ json }) => ({
-        data: Object.assign(Object.assign({}, params.data), { id: json.id }),
+        data: Object.assign(Object.assign(Object.assign({}, params.data), json), { id: json.id || params.data.id }),
     })),
     delete: (resource, params) => httpClient(`${apiUrl}/${resource}/${params.id}`, {
-        method: "DELETE",
+        method: 'DELETE',
     }).then(({ json }) => ({ data: Object.assign(Object.assign({}, json), { id: params.id }) })),
     deleteMany: (resource, params) => Promise.all(params.ids.map((id) => httpClient(`${apiUrl}/${resource}/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
     }))).then((responses) => ({ data: responses.map(({ json }) => json) })),
 });
 //# sourceMappingURL=index.js.map
