@@ -8,7 +8,7 @@
   "main": "packages/data-provider/lib/index.js",
   "typings": "packages/data-provider/lib/index.d.ts",
   "scripts": {
-    "postinstall": "cd packages/data-provider && npm install && npm run build",
+    "postinstall": "cd packages/data-provider && npm install --ignore-scripts && yarn build",
     "build": "cd packages/data-provider && npm run build",
     "build:watch": "cd packages/data-provider && npm run build:watch",
     "install-deps": "cd packages/data-provider && npm install"
