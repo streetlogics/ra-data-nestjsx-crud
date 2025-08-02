@@ -1,5 +1,5 @@
 import { DataProvider, fetchUtils } from 'ra-core';
-declare const _default: (apiUrl: string, httpClient?: (url: any, options?: fetchUtils.Options) => Promise<{
+declare const _default: (apiUrl: string, httpClient?: (url: any, options?: fetchUtils.Options | undefined) => Promise<{
     status: number;
     headers: Headers;
     body: string;

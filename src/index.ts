@@ -70,7 +70,7 @@ const composeQueryParams = (queryParams: any = {}): string => {
   return stringify(fetchUtils.flattenObject(queryParams), { skipNull: true });
 };
 
-const mergeEncodedQueries = (...encodedQueries) =>
+const mergeEncodedQueries = (...encodedQueries: string[]) =>
   encodedQueries.map((query) => query).join('&');
 
 export default (
